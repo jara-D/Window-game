@@ -15,7 +15,7 @@ namespace OwO_UwU
 
     public Scene() : base()
     {
-      player = new PlayerShip("resources/Window/gayship.png");
+      player = new PlayerShip();
       player.Position = new Vector2(Settings.ScreenSize.X / 2, Settings.ScreenSize.Y / 2);
       player.Scale = new Vector2((float)1.5, (float)1.5);
       AddChild(player);

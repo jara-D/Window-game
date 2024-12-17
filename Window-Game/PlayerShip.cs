@@ -1,8 +1,9 @@
 using System;
 using System.Numerics; // Vector2
-using RayDot; // RayDot
- 
-namespace OwO_UwU 
+using RayDot;
+using Raylib_cs; // RayDot
+
+namespace OwO_UwU
 {
 	class PlayerShip : MoverNode
 	{
@@ -10,15 +11,16 @@ namespace OwO_UwU
 		private float thrustForce;
 		private SpriteNode body;
 		public bool Moving = false;
+		public Vector2 Size;
 
 
-		public PlayerShip(string name) : base(name)
+		public PlayerShip() : base()
 		{
-			Position = new Vector2(200, Settings.ScreenSize.Y / 2);
-			Pivot = new Vector2(0.45f, 0.5f);
+			Position = new Vector2(Settings.ScreenSize.X / 2, Settings.ScreenSize.Y / 2);
 			Scale = new Vector2(0.9f, 0.9f);
 			thrustForce = 500;
 			rotSpeed = 2;
+			Size = new Vector2(50, 50);
 		}
 
 		public override void Update(float deltaTime) // override implementation of MoverNode.Update()
@@ -35,9 +37,32 @@ namespace OwO_UwU
 				BreakThrust(deltaTime);
 			}
 
+			Draw();
+
+
+
+
+			Raylib.DrawRectangleGradientH((int)Settings.ScreenSize.X / 4 * 2 - 90, 170, 180, 130, Color.MAROON, Color.GOLD);
 			// minimum is -500 because it needs to be able to go in all directions,
 			// a negative velocity just means its going in a different direction
 			Velocity = Vector2.Clamp(Velocity, new Vector2(-500, -500), new Vector2(500, 500));
+		}
+
+
+
+
+
+		public void Draw()
+		{
+			Raylib.DrawTriangle(new Vector2(Position.X / 4.0f * 3.0f, 80.0f),
+													new Vector2(Position.X / 4.0F * 3.0f - 60.0f, 150.0f), // center
+													new Vector2(Position.X / 4.0f * 3.0f + 60.0f, 150.0f),
+													Color.VIOLET);
+
+
+			// DrawTriangle((Vector2){ screenWidth / 4.0f * 3.0f, 80.0f },
+			//                    (Vector2){ screenWidth / 4.0f * 3.0f - 60.0f, 150.0f },
+			//                    (Vector2){ screenWidth / 4.0f * 3.0f + 60.0f, 150.0f }, VIOLET);
 		}
 
 		public void RotateLeft(float deltaTime)
@@ -73,9 +98,8 @@ namespace OwO_UwU
 		{
 			int swidth = (int)Settings.ScreenSize.X;
 			int sheight = (int)Settings.ScreenSize.Y;
-			int halfwidth = (int)TextureSize.X / 2;
-			int halfheight = (int)TextureSize.Y / 2;
-
+			int halfwidth = (int)Size.X / 2;
+			int halfheight = (int)Size.Y / 2;
 			Vector2 pos = Position;
 			Vector2 vel = Velocity;
 			if (pos.X > swidth - halfwidth) { pos.X = swidth - halfwidth; vel.X *= -1; }
