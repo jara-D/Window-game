@@ -4,8 +4,6 @@
 
 
  ## Plans
-                                                                         
-- move away from pngs and start using raylib shapes, we are 🌟certified png haters🌟 now.
 - pixelated filter
 - player gun
 - enemies

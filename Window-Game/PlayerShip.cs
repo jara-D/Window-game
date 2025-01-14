@@ -14,7 +14,7 @@ namespace OwO_UwU
 		public Vector2 Size;
 
 
-		public PlayerShip() : base()
+		public PlayerShip(string name) : base(name)
 		{
 			Position = new Vector2(Settings.ScreenSize.X / 2, Settings.ScreenSize.Y / 2);
 			Scale = new Vector2(0.9f, 0.9f);
@@ -36,33 +36,16 @@ namespace OwO_UwU
 			{
 				BreakThrust(deltaTime);
 			}
-
-			Draw();
-
-
-
-
-			Raylib.DrawRectangleGradientH((int)Settings.ScreenSize.X / 4 * 2 - 90, 170, 180, 130, Color.MAROON, Color.GOLD);
-			// minimum is -500 because it needs to be able to go in all directions,
-			// a negative velocity just means its going in a different direction
-			Velocity = Vector2.Clamp(Velocity, new Vector2(-500, -500), new Vector2(500, 500));
 		}
 
 
-
-
-
-		public void Draw()
+		public void Shoot()
 		{
-			Raylib.DrawTriangle(new Vector2(Position.X / 4.0f * 3.0f, 80.0f),
-													new Vector2(Position.X / 4.0F * 3.0f - 60.0f, 150.0f), // center
-													new Vector2(Position.X / 4.0f * 3.0f + 60.0f, 150.0f),
-													Color.VIOLET);
-
-
-			// DrawTriangle((Vector2){ screenWidth / 4.0f * 3.0f, 80.0f },
-			//                    (Vector2){ screenWidth / 4.0f * 3.0f - 60.0f, 150.0f },
-			//                    (Vector2){ screenWidth / 4.0f * 3.0f + 60.0f, 150.0f }, VIOLET);
+			Bullet bullet = new(1);
+			bullet.Position = Position;
+			bullet.Velocity = new Vector2((float)Math.Cos(Rotation), (float)Math.Sin(Rotation)) * 500;
+			bullet.Rotation = Rotation;
+			Parent.AddChild(bullet);
 		}
 
 		public void RotateLeft(float deltaTime)

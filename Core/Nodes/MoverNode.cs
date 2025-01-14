@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace RayDot
 {
-	abstract class MoverNode : Node, IMovable
+	abstract class MoverNode : SpriteNode, IMovable
 	{
 		// Implementation of IMovable: Velocity, Acceleration, Mass
 		protected Vector2 velocity;
@@ -21,7 +21,7 @@ namespace RayDot
 			set { mass = value; }
 		}
 
-		protected MoverNode() : base()
+		protected MoverNode(string name) : base(name)
 		{
 			Velocity = new Vector2(0.0f, 0.0f);
 			acceleration = new Vector2(0.0f, 0.0f);
