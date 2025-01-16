@@ -1,32 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "D:\\gamedev\\games\\window-thingy\\RayDot.csproj": {}
+    "C:\\Users\\Sanne\\OneDrive\\Bureaublad\\Alfa stuff\\this is a window\\RayDot.csproj": {}
   },
   "projects": {
-    "D:\\gamedev\\games\\window-thingy\\RayDot.csproj": {
+    "C:\\Users\\Sanne\\OneDrive\\Bureaublad\\Alfa stuff\\this is a window\\RayDot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\gamedev\\games\\window-thingy\\RayDot.csproj",
+        "projectUniqueName": "C:\\Users\\Sanne\\OneDrive\\Bureaublad\\Alfa stuff\\this is a window\\RayDot.csproj",
         "projectName": "RayDot",
-        "projectPath": "D:\\gamedev\\games\\window-thingy\\RayDot.csproj",
-        "packagesPath": "C:\\Users\\joran\\.nuget\\packages\\",
-        "outputPath": "D:\\gamedev\\games\\window-thingy\\obj\\",
+        "projectPath": "C:\\Users\\Sanne\\OneDrive\\Bureaublad\\Alfa stuff\\this is a window\\RayDot.csproj",
+        "packagesPath": "C:\\Users\\Sanne\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sanne\\OneDrive\\Bureaublad\\Alfa stuff\\this is a window\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\joran\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Sanne\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {}
           }
         },
@@ -39,11 +37,12 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "Raylib-cs": {
               "target": "Package",
@@ -66,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.307/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

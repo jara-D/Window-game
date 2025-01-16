@@ -17,6 +17,7 @@ namespace RayDot
 			// update the window size
 			Raylib.SetWindowSize((int)Settings.ScreenSize.X, (int)Settings.ScreenSize.Y);
 
+
 			if (Raylib.WindowShouldClose())
 			{
 				ResourceManager.Instance.CleanUp();
