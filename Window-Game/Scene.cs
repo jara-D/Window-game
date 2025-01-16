@@ -3,6 +3,7 @@ using System.Numerics; // Vector2
 using System.Collections.Generic; // List
 using RayDot; // RayDot
 using Raylib_cs;
+using System.Threading;
 
 namespace OwO_UwU
 {
@@ -11,6 +12,7 @@ namespace OwO_UwU
     private PlayerShip player;
     private TextNode playerInfo;
     private List<Bullet> bullets;
+    private Timer shrinkTimer;
 
 
     public Scene() : base()
@@ -25,6 +27,10 @@ namespace OwO_UwU
       playerInfo = new TextNode("Velocity: 0", 20);
       playerInfo.Position = new Vector2(10, 30);
       AddChild(playerInfo);
+
+      shrinkTimer = new Timer(ShrinkScreen, null, 0, 200);
+
+
 
 
 
@@ -132,6 +138,13 @@ namespace OwO_UwU
       }
 
       Console.WriteLine("New screen size: " + Settings.ScreenSize);
+    }
+
+    private static void ShrinkScreen(object state)
+    {
+      Settings.ScreenSize.Y -= 2;
+      Settings.ScreenSize.X -= 2;
+      Raylib.SetWindowPosition((int)Raylib.GetWindowPosition().X + 1, (int)Raylib.GetWindowPosition().Y + 1);
     }
   }
 }

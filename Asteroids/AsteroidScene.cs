@@ -28,7 +28,7 @@ namespace UserLand
 		{
 			Children.Clear();
 			State = State.Playing;
-						background = new SpriteNode("resources/background.png");
+			background = new SpriteNode("resources/background.png");
 			background.Pivot = new Vector2(0, 0);
 			AddChild(background);
 
