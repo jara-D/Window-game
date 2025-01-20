@@ -18,6 +18,7 @@ namespace RayDot
 		public bool Run(SceneNode scene)
 		{
 
+
 			if (Raylib.WindowShouldClose())
 			{
 				ResourceManager.Instance.CleanUp();

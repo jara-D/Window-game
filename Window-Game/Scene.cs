@@ -7,29 +7,30 @@ using System.Threading;
 
 namespace OwO_UwU
 {
-    class Scene : SceneNode
+  
+  class Scene : SceneNode
+  {
+    private PlayerShip player;
+    private TextNode playerInfo;
+    private List<Bullet> bullets;
+    private Timer shrinkTimer;
+
+
+    public Scene() : base()
     {
-        private PlayerShip player;
-        private TextNode playerInfo;
-        private List<Bullet> bullets;
-        private Thread shrinkThread;
+      player = new PlayerShip("resources/Window/gayship.png");
+      player.Position = new Vector2(Settings.ScreenSize.X / 2, Settings.ScreenSize.Y / 2);
+      player.Scale = new Vector2((float)1.5, (float)1.5);
+      AddChild(player);
 
-        public Scene() : base()
-        {
-            player = new PlayerShip("resources/Window/gayship.png");
-            player.Position = new Vector2(Settings.ScreenSize.X / 2, Settings.ScreenSize.Y / 2);
-            player.Scale = new Vector2((float)1.5, (float)1.5);
-            AddChild(player);
 
-            // player info
-            playerInfo = new TextNode("Velocity: 0", 20);
-            playerInfo.Position = new Vector2(10, 30);
-            AddChild(playerInfo);
+      // player info
+      playerInfo = new TextNode("Velocity: 0", 20);
+      playerInfo.Position = new Vector2(10, 30);
+      AddChild(playerInfo);
 
-            bullets = new List<Bullet>();
-
-        }
-
+      shrinkTimer = new Timer(ShrinkScreen, null, 0, 200);
+      bullets = new List<Bullet>();
 
         public override void Update(float deltaTime)
         {
@@ -99,4 +100,11 @@ namespace OwO_UwU
             }
         }
     }
+    private static void ShrinkScreen(object state)
+    {
+      Settings.ScreenSize.Y -= 2;
+      Settings.ScreenSize.X -= 2;
+      Raylib.SetWindowPosition((int)Raylib.GetWindowPosition().X + 1, (int)Raylib.GetWindowPosition().Y + 1);
+    }
+  }
 }
