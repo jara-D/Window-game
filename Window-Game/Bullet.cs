@@ -6,7 +6,7 @@ namespace OwO_UwU
 	{
 		public float Speed { get; set; }
 
-		public Bullet(float speed) : base("resources/bullet.png")
+		public Bullet(float speed) : base("resources/Window/bullet.png")
 		{
 			Speed = speed;
 		}
