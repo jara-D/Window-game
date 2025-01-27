@@ -54,7 +54,7 @@ namespace OwO_UwU
             // int NumberY   = rnd.Next(-5, (int)Settings.ScreenSize.Y);
             // Console.WriteLine(NumberX + "X");
             // Console.WriteLine(NumberY + "Y");
-           
+
 
             Raylib.DrawFPS(10, 10);
         }
@@ -62,7 +62,7 @@ namespace OwO_UwU
 
         private void SpawnEnemy(int amount, Vector2 pos)
         {
- 
+
 
             var rand = new Random();
             for (int i = 0; i < amount; i++)
@@ -163,6 +163,28 @@ namespace OwO_UwU
                 {
                     bullets.Remove(bullet);
                     RemoveChild(bullet);
+                    // Top
+                    if (bullet.Position.Y < 0)
+                    {
+                        Settings.ScreenSize.Y += 15;
+                        Raylib.SetWindowPosition((int)Raylib.GetWindowPosition().X, (int)Raylib.GetWindowPosition().Y - 17);
+                    }
+                    // Bottom
+                    if (bullet.Position.Y > Settings.ScreenSize.Y)
+                    {
+                        Settings.ScreenSize.Y += 15;
+                    }
+                    // Left
+                    if (bullet.Position.X < 0)
+                    {
+                        Settings.ScreenSize.X += 15;
+                        Raylib.SetWindowPosition((int)Raylib.GetWindowPosition().X - 17, (int)Raylib.GetWindowPosition().Y);
+                    }
+                    // Right
+                    if (bullet.Position.X > Settings.ScreenSize.X)
+                    {
+                        Settings.ScreenSize.X += 15;
+                    }
                 }
             }
         }
