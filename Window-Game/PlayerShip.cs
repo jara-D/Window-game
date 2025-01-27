@@ -9,9 +9,9 @@ namespace OwO_UwU
 	{
 		private float rotSpeed;
 		private float thrustForce;
-		private SpriteNode body;
 		public bool Moving = false;
 		public Vector2 Size;
+		private float bulletCoolDown;
 
 
 		public PlayerShip(string name) : base(name)
@@ -21,6 +21,7 @@ namespace OwO_UwU
 			thrustForce = 500;
 			rotSpeed = 2;
 			Size = new Vector2(50, 50);
+			bulletCoolDown = 0.0f;
 		}
 
 		public override void Update(float deltaTime) // override implementation of MoverNode.Update()
@@ -39,14 +40,7 @@ namespace OwO_UwU
 		}
 
 
-		public void Shoot()
-		{
-			Bullet bullet = new(1);
-			bullet.Position = Position;
-			bullet.Velocity = new Vector2((float)Math.Cos(Rotation), (float)Math.Sin(Rotation)) * 500;
-			bullet.Rotation = Rotation;
-			Parent.AddChild(bullet);
-		}
+
 
 		public void RotateLeft(float deltaTime)
 		{
@@ -91,6 +85,24 @@ namespace OwO_UwU
 			if (pos.Y < 0 + halfheight) { pos.Y = 0 + halfheight; vel.Y *= -1; }
 			Position = pos;
 			Velocity = vel;
+		}
+
+		public Bullet Shoot(float deltaTime)
+		{
+			bulletCoolDown += deltaTime;
+			if (bulletCoolDown >= 0.1f)
+			{
+				bulletCoolDown = 0.0f;
+				Bullet b = new Bullet(500.0f);
+				b.Rotation = this.WorldRotation;
+				float vel_x = (float)Math.Cos(b.Rotation);
+				float vel_y = (float)Math.Sin(b.Rotation);
+				Vector2 direction = new Vector2(vel_x, vel_y);
+				b.Position = this.WorldPosition + (direction * this.TextureSize.X / 2);
+				b.Velocity = direction * b.Speed;
+				return b;
+			}
+			return null;
 		}
 	}
 

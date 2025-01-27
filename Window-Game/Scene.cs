@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using RayDot;
 using Raylib_cs;
 using System.Threading;
+using System.ComponentModel;
+
 
 namespace OwO_UwU
 {
@@ -14,7 +16,7 @@ namespace OwO_UwU
         private TextNode playerInfo;
         private List<Bullet> bullets;
         private Timer shrinkTimer;
-
+        private List<Enemy> Enemies;
 
         public Scene() : base()
         {
@@ -31,6 +33,10 @@ namespace OwO_UwU
 
             shrinkTimer = new Timer(ShrinkScreen, null, 0, 200);
             bullets = new List<Bullet>();
+            Enemies = new List<Enemy>();
+            SpawnEnemy(7, Raylib.GetWindowPosition());
+
+
         }
 
         public override void Update(float deltaTime)
@@ -39,10 +45,44 @@ namespace OwO_UwU
             HandleBullets(deltaTime);
             HandleInput(deltaTime);
             HandlePlayer(deltaTime);
+            HandleEnemies(deltaTime);
+
+
+
+            // Random rnd = new Random();
+            // int NumberX   = rnd.Next(-5, (int)Settings.ScreenSize.X);  
+            // int NumberY   = rnd.Next(-5, (int)Settings.ScreenSize.Y);
+            // Console.WriteLine(NumberX + "X");
+            // Console.WriteLine(NumberY + "Y");
+           
 
             Raylib.DrawFPS(10, 10);
         }
 
+
+        private void SpawnEnemy(int amount, Vector2 pos)
+        {
+ 
+
+            var rand = new Random();
+            for (int i = 0; i < amount; i++)
+            {
+                Enemy a = new();
+                a.Position = pos;
+
+
+                Vector2 vel = new Vector2();
+                vel.X = (float)(rand.NextDouble() * 400) - 200;
+                vel.Y = (float)(rand.NextDouble() * 400) - 200;
+                a.Velocity = vel;
+
+                float pi = (float)Math.PI;
+                a.RotSpeed = (float)(rand.NextDouble() * pi * 4) - pi * 2;
+
+                Enemies.Add(a);
+                AddChild(a);
+            }
+        }
         private void handleDisplays(float deltaTime)
         {
             // Update player info
@@ -51,6 +91,61 @@ namespace OwO_UwU
 
         private void HandlePlayer(float deltaTime)
         {
+            if (State == State.Lost)
+            {
+                return;
+            }
+
+            foreach (Enemy Enemy in Enemies)
+            {
+                // distance to player
+                float distance = Vector2.Distance(Enemy.WorldPosition, player.WorldPosition);
+                float toCheck = player.TextureSize.X / 2 + (Enemy.TextureSize.X / 2 * Enemy.Scale.X) * 0.8f;
+
+                if (distance < toCheck)
+                {
+                    if (Children.Contains(player)) { Children.Remove(player); }
+                    State = State.Lost;
+                }
+            }
+        }
+
+        private void HandleEnemies(float deltaTime)
+        {
+            if (State == State.Lost)
+            {
+                return;
+            }
+            List<Bullet> bulletsToDelete = new List<Bullet>();
+            List<Enemy> EnemiesToDelete = new List<Enemy>();
+            foreach (Enemy Enemy in Enemies)
+            {
+
+                foreach (Bullet bullet in bullets)
+                {
+
+                    float distance = Vector2.Distance(Enemy.WorldPosition, bullet.WorldPosition);
+                    float toCheck = Enemy.TextureSize.X / 2 * Enemy.Scale.X;
+                    if (distance < toCheck)
+                    {
+                        EnemiesToDelete.Add(Enemy);
+                        bulletsToDelete.Add(bullet);
+                    }
+
+
+                }
+            }
+
+            foreach (Enemy Enemy in EnemiesToDelete)
+            {
+                Enemies.Remove(Enemy);
+                RemoveChild(Enemy);
+            }
+            foreach (Bullet bullet in bulletsToDelete)
+            {
+                bullets.Remove(bullet);
+                RemoveChild(bullet);
+            }
 
         }
 
@@ -95,9 +190,17 @@ namespace OwO_UwU
             {
                 player.RotateRight(deltaTime);
             }
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
+            if (Raylib.IsKeyDown(KeyboardKey.KEY_SPACE))
             {
-                player.Shoot();
+                if (!(State == State.Lost))
+                {
+                    Bullet bullet = player.Shoot(deltaTime);
+                    if (bullet != null)
+                    {
+                        AddChild(bullet);
+                        bullets.Add(bullet);
+                    }
+                }
             }
         }
 
