@@ -90,7 +90,7 @@ namespace OwO_UwU
 		public Bullet Shoot(float deltaTime)
 		{
 			bulletCoolDown += deltaTime;
-			if (bulletCoolDown >= 0.1f)
+			if (bulletCoolDown >= 0.3f)
 			{
 				bulletCoolDown = 0.0f;
 				Bullet b = new Bullet(500.0f);

@@ -281,8 +281,8 @@ namespace OwO_UwU
             {
                 return;
             }
-            Settings.ScreenSize.Y -= 2;
-            Settings.ScreenSize.X -= 2;
+            Settings.ScreenSize.Y -= 4;
+            Settings.ScreenSize.X -= 4;
             int newPosX = (int)Raylib.GetWindowPosition().X + 1;
             int newPosY = (int)Raylib.GetWindowPosition().Y + 1;
 
