@@ -69,7 +69,6 @@ namespace OwO_UwU
 
         private void SpawnEnemy(int amount)
         {
-
             var rand = new Random();
             for (int i = 0; i < amount; i++)
             {
@@ -153,8 +152,8 @@ namespace OwO_UwU
             {
                 var dir = Vector2.Subtract(player.WorldPosition, Enemy.WorldPosition);
                 Vector2 force = Vector2.Multiply(Vector2.Normalize(dir), 200);
-                // Enemy.AddForce(force * deltaTime);
                 Enemy.Acceleration = force;
+                
                 foreach (Bullet bullet in bullets)
                 {
                     float distance = Vector2.Distance(Enemy.WorldPosition, bullet.WorldPosition);
@@ -194,27 +193,43 @@ namespace OwO_UwU
                 {
                     bullets.Remove(bullet);
                     RemoveChild(bullet);
+                    int window = Raylib.GetCurrentMonitor();
+                    int windowWidth = Raylib.GetMonitorWidth(window);
+                    int windowHeight = Raylib.GetMonitorHeight(window);
+
                     // Top
                     if (bullet.Position.Y < 0)
                     {
-                        Settings.ScreenSize.Y += 15;
-                        Raylib.SetWindowPosition((int)Raylib.GetWindowPosition().X, (int)Raylib.GetWindowPosition().Y - 17);
+                        if (Raylib.GetWindowPosition().Y - 17 > 0)
+                        {
+                            Settings.ScreenSize.Y += 15;
+                            Raylib.SetWindowPosition((int)Raylib.GetWindowPosition().X, (int)Raylib.GetWindowPosition().Y - 17);
+                        }
                     }
                     // Bottom
                     if (bullet.Position.Y > Settings.ScreenSize.Y)
                     {
-                        Settings.ScreenSize.Y += 15;
+                        if (Raylib.GetWindowPosition().Y + Settings.ScreenSize.Y + 17 < windowHeight)
+                        {
+                            Settings.ScreenSize.Y += 15;
+                        }
                     }
                     // Left
                     if (bullet.Position.X < 0)
                     {
-                        Settings.ScreenSize.X += 15;
-                        Raylib.SetWindowPosition((int)Raylib.GetWindowPosition().X - 17, (int)Raylib.GetWindowPosition().Y);
+                        if (Raylib.GetWindowPosition().X - 17 > 0)
+                        {
+                            Settings.ScreenSize.X += 15;
+                            Raylib.SetWindowPosition((int)Raylib.GetWindowPosition().X - 17, (int)Raylib.GetWindowPosition().Y);
+                        }
                     }
                     // Right
                     if (bullet.Position.X > Settings.ScreenSize.X)
                     {
-                        Settings.ScreenSize.X += 15;
+                        if (Raylib.GetWindowPosition().X + Settings.ScreenSize.X + 17 < windowWidth)
+                        {
+                            Settings.ScreenSize.X += 15;
+                        }
                     }
                 }
             }
@@ -224,45 +239,59 @@ namespace OwO_UwU
         {
             if (Raylib.IsKeyDown(KeyboardKey.KEY_W))
             {
-                player.Moving = true;
+            player.Moving = true;
             }
             else
             {
-                player.Moving = false;
+            player.Moving = false;
             }
 
             if (Raylib.IsKeyDown(KeyboardKey.KEY_S))
             {
-                player.BreakThrust(deltaTime);
+            player.BreakThrust(deltaTime);
             }
             if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
             {
-                player.RotateLeft(deltaTime);
+            player.RotateLeft(deltaTime);
             }
             if (Raylib.IsKeyDown(KeyboardKey.KEY_D))
             {
-                player.RotateRight(deltaTime);
+            player.RotateRight(deltaTime);
             }
             if (Raylib.IsKeyDown(KeyboardKey.KEY_SPACE))
             {
-                if (!(State == State.Lost))
+            if (!(State == State.Lost))
+            {
+                Bullet bullet = player.Shoot(deltaTime);
+                if (bullet != null)
                 {
-                    Bullet bullet = player.Shoot(deltaTime);
-                    if (bullet != null)
-                    {
-                        AddChild(bullet);
-                        bullets.Add(bullet);
-                    }
+                AddChild(bullet);
+                bullets.Add(bullet);
+                // Apply recoil force to the player
+                Vector2 recoilForce = Vector2.Multiply(Vector2.Normalize(-player.Direction), 100000);
+                player.AddForce(recoilForce);
                 }
+            }
             }
         }
 
-        private static void ShrinkScreen(object state)
+        private void ShrinkScreen(object state)
         {
+            if (State == State.Lost)
+            {
+                return;
+            }
             Settings.ScreenSize.Y -= 2;
             Settings.ScreenSize.X -= 2;
-            Raylib.SetWindowPosition((int)Raylib.GetWindowPosition().X + 1, (int)Raylib.GetWindowPosition().Y + 1);
-            Raylib.SetWindowSize((int)Settings.ScreenSize.X, (int)Settings.ScreenSize.Y);
+            int newPosX = (int)Raylib.GetWindowPosition().X + 1;
+            int newPosY = (int)Raylib.GetWindowPosition().Y + 1;
+
+            Raylib.SetWindowPosition(newPosX, newPosY);
+            
+            int newWidth = (int)Settings.ScreenSize.X;
+            int newHeight = (int)Settings.ScreenSize.Y;
+
+            Raylib.SetWindowSize(newWidth, newHeight);
         }
     }
 }

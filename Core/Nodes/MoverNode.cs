@@ -33,6 +33,14 @@ namespace RayDot
 			get { return mass; }
 			set { mass = value; }
 		}
+		public Vector2 Direction
+
+		{
+			get
+			{
+				return Vector2.Normalize(new Vector2((float)Math.Cos(Rotation), (float)Math.Sin(Rotation)));
+			}
+		}
 
 
 		protected MoverNode(string name) : base(name)
