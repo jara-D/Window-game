@@ -8,6 +8,8 @@ namespace RayDot
 		Vector2 Acceleration { get; }
 		float Mass { get; set; }
 
+		float MaxSpeed { get; set; }
+
 		void Move(float deltaTime);
 		void AddForce(Vector2 force);
 	}

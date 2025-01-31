@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 
 namespace RayDot
@@ -8,27 +9,41 @@ namespace RayDot
 		protected Vector2 velocity;
 		protected Vector2 acceleration;
 		protected float mass;
+		protected float maxSpeed;
 
-		public Vector2 Velocity {
+		public Vector2 Velocity
+		{
 			get { return velocity; }
 			set { velocity = value; }
 		}
-		public Vector2 Acceleration {
+		public Vector2 Acceleration
+		{
 			get { return acceleration; }
+			set { acceleration = value; }
 		}
-		public float Mass {
+
+		public float MaxSpeed
+		{
+			get { return maxSpeed; }
+			set { maxSpeed = value; }
+		}
+
+		public float Mass
+		{
 			get { return mass; }
 			set { mass = value; }
 		}
+
 
 		protected MoverNode(string name) : base(name)
 		{
 			Velocity = new Vector2(0.0f, 0.0f);
 			acceleration = new Vector2(0.0f, 0.0f);
 			Mass = 1.0f;
+			MaxSpeed = 10000000.0f;
 		}
 
-		public override void Update (float deltaTime)
+		public override void Update(float deltaTime)
 		{
 			base.Update(deltaTime); // SpriteNode.Draw()
 			Move(deltaTime); // IMovable
@@ -39,6 +54,8 @@ namespace RayDot
 		{
 			// apply motion 101
 			Velocity += Acceleration * deltaTime;
+			Velocity = new Vector2(MathF.Min(Velocity.X, MaxSpeed), MathF.Min(Velocity.Y, MaxSpeed));
+
 			Position += Velocity * deltaTime;
 			// reset acceleration
 			acceleration *= 0.0f;

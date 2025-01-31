@@ -34,7 +34,7 @@ namespace OwO_UwU
             shrinkTimer = new Timer(ShrinkScreen, null, 0, 200);
             bullets = new List<Bullet>();
             Enemies = new List<Enemy>();
-            SpawnEnemy(7, Raylib.GetWindowPosition());
+            SpawnEnemy(7);
 
 
         }
@@ -47,20 +47,11 @@ namespace OwO_UwU
             HandlePlayer(deltaTime);
             HandleEnemies(deltaTime);
 
-
-
-            // Random rnd = new Random();
-            // int NumberX   = rnd.Next(-5, (int)Settings.ScreenSize.X);  
-            // int NumberY   = rnd.Next(-5, (int)Settings.ScreenSize.Y);
-            // Console.WriteLine(NumberX + "X");
-            // Console.WriteLine(NumberY + "Y");
-
-
             Raylib.DrawFPS(10, 10);
         }
 
 
-        private void SpawnEnemy(int amount, Vector2 pos)
+        private void SpawnEnemy(int amount)
         {
 
 
@@ -68,8 +59,30 @@ namespace OwO_UwU
             for (int i = 0; i < amount; i++)
             {
                 Enemy a = new();
-                a.Position = pos;
+                Vector2 pos = new Vector2();
+                // chose a random spawnpoint outside the screen
+                int side = rand.Next(4);
 
+                switch (side)
+                {
+                    case 0:
+                        pos.X = rand.Next((int)Settings.ScreenSize.X);
+                        pos.Y = -50;
+                        break;
+                    case 1:
+                        pos.X = rand.Next((int)Settings.ScreenSize.X);
+                        pos.Y = Settings.ScreenSize.Y + 50;
+                        break;
+                    case 2:
+                        pos.X = -50;
+                        pos.Y = rand.Next((int)Settings.ScreenSize.Y);
+                        break;
+                    case 3:
+                        pos.X = Settings.ScreenSize.X + 50;
+                        pos.Y = rand.Next((int)Settings.ScreenSize.Y);
+                        break;
+                }
+                a.Position = pos;
 
                 Vector2 vel = new Vector2();
                 vel.X = (float)(rand.NextDouble() * 400) - 200;
@@ -104,7 +117,10 @@ namespace OwO_UwU
 
                 if (distance < toCheck)
                 {
-                    if (Children.Contains(player)) { Children.Remove(player); }
+                    if (Children.Contains(player)) 
+                    { 
+                    //    Children.Remove(player);
+                    }
                     State = State.Lost;
                 }
             }
@@ -120,10 +136,12 @@ namespace OwO_UwU
             List<Enemy> EnemiesToDelete = new List<Enemy>();
             foreach (Enemy Enemy in Enemies)
             {
-
+                var dir = Vector2.Subtract(player.WorldPosition, Enemy.WorldPosition);
+                Vector2 force = Vector2.Multiply(Vector2.Normalize(dir), 200);
+                // Enemy.AddForce(force * deltaTime);
+                Enemy.Acceleration = force;
                 foreach (Bullet bullet in bullets)
                 {
-
                     float distance = Vector2.Distance(Enemy.WorldPosition, bullet.WorldPosition);
                     float toCheck = Enemy.TextureSize.X / 2 * Enemy.Scale.X;
                     if (distance < toCheck)
@@ -131,8 +149,6 @@ namespace OwO_UwU
                         EnemiesToDelete.Add(Enemy);
                         bulletsToDelete.Add(bullet);
                     }
-
-
                 }
             }
 

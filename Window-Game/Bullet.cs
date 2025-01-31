@@ -9,6 +9,7 @@ namespace OwO_UwU
 		public Bullet(float speed) : base("resources/Window/bullet.png")
 		{
 			Speed = speed;
+			maxSpeed = 1000.0f;
 		}
 	}
 }
