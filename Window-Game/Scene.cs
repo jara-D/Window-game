@@ -17,6 +17,8 @@ namespace OwO_UwU
         private List<Bullet> bullets;
         private Timer shrinkTimer;
         private List<Enemy> Enemies;
+        private Timer EnemInterval;
+        private SpriteNode gameover;
 
         public Scene() : base()
         {
@@ -25,6 +27,10 @@ namespace OwO_UwU
             player.Scale = new Vector2((float)1.5, (float)1.5);
             AddChild(player);
 
+            gameover = new SpriteNode("resources/Astroid/gameover.png");
+			gameover.Color = Color.RED;
+			gameover.Position = new Vector2(0, -256); // outside screen
+			AddChild(gameover);
 
             // player info
             playerInfo = new TextNode("Velocity: 0", 20);
@@ -34,9 +40,9 @@ namespace OwO_UwU
             shrinkTimer = new Timer(ShrinkScreen, null, 0, 200);
             bullets = new List<Bullet>();
             Enemies = new List<Enemy>();
-            SpawnEnemy(7);
-
-
+           
+            //spawn enemies every 2000 milliseconds ᓚᘏᗢ
+            EnemInterval = new Timer (EnemyTimed, null, 0, 2000);
         }
 
         public override void Update(float deltaTime)
@@ -50,11 +56,15 @@ namespace OwO_UwU
             Raylib.DrawFPS(10, 10);
         }
 
+        private void EnemyTimed(object state)
+        {
+            SpawnEnemy(2);
+        }
+
 
         private void SpawnEnemy(int amount)
         {
-
-
+            
             var rand = new Random();
             for (int i = 0; i < amount; i++)
             {
@@ -119,7 +129,7 @@ namespace OwO_UwU
                 {
                     if (Children.Contains(player)) 
                     { 
-                    //    Children.Remove(player);
+                        Children.Remove(player);
                     }
                     State = State.Lost;
                 }
