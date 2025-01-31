@@ -152,7 +152,7 @@ namespace OwO_UwU
             {
                 var dir = Vector2.Subtract(player.WorldPosition, Enemy.WorldPosition);
                 Vector2 force = Vector2.Multiply(Vector2.Normalize(dir), 200);
-                Enemy.Acceleration = force;
+                Enemy.Velocity = Vector2.Lerp(Enemy.Velocity, force, deltaTime * 2);
                 
                 foreach (Bullet bullet in bullets)
                 {
