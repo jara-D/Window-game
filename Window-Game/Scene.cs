@@ -54,6 +54,11 @@ namespace OwO_UwU
             HandleEnemies(deltaTime);
 
             Raylib.DrawFPS(10, 10);
+
+            if (State == State.Lost)
+			{
+				gameover.Position = Settings.ScreenSize / 2;
+			}
         }
 
         private void EnemyTimed(object state)
@@ -64,7 +69,7 @@ namespace OwO_UwU
 
         private void SpawnEnemy(int amount)
         {
-            
+
             var rand = new Random();
             for (int i = 0; i < amount; i++)
             {
